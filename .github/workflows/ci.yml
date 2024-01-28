@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout the code
-      uses: actions/checkout@v3.1.0
+      uses: actions/checkout@v4
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag localbuild/testimage:latest --build-arg TARGETARCH=linux/amd64
     - name: Run the Anchore scan action itself with GitHub Advanced Security code scanning integration enabled
@@ -26,7 +26,7 @@ jobs:
         image: "localbuild/testimage:latest"
         fail-build: false
     - name: Upload Anchore Scan Report
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: results.sarif
 
@@ -76,7 +76,7 @@ jobs:
           digest="${{ steps.build.outputs.digest }}"
           touch "/tmp/digests/${digest#sha256:}"
       - name: Upload digest
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: digests
           path: /tmp/digests/*
